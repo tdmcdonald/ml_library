@@ -19,11 +19,12 @@ class DecisionTree:
         self.labels=set()
         self.root_node= None
         self.attributes= None
+        self.current_depth=-1
 
     def bestSplit(self, A, labels): #A will have the same dims as self.features
         # print('in best split a Dims are ',A.shape,'labels',labels)
         if self.criterion=='entropy':
-            print('entropy')
+            # print('entropy')
             label_counts={}
             for label in labels: #this increments the lable counts to find global entropy
                 if label not in label_counts:
@@ -103,7 +104,7 @@ class DecisionTree:
                 if ig[attribute]>max_ig:
                     max_ig=ig[attribute]
                     max_ig_attr= attribute
-            print('max ig is ', max_ig, 'attr', max_ig_attr)
+            # print('max ig is ', max_ig, 'attr', max_ig_attr)
             return max_ig_attr
                    
                 
@@ -181,41 +182,33 @@ class DecisionTree:
             max_ig_attr=None
             for attribute in feature_gini:
                 ig[attribute]=current_gini-expected_gini[attribute]
-                print('for attribute ',attribute,'ig is ', ig[attribute], 'child entr', feature_gini[attribute])
+                # print('for attribute ',attribute,'ig is ', ig[attribute], 'child entr', feature_gini[attribute])
                 if ig[attribute]>max_ig:
                     max_ig=ig[attribute]
                     max_ig_attr= attribute
-            print('max ig is ', max_ig, 'attr', max_ig_attr)
+            # print('max ig is ', max_ig, 'attr', max_ig_attr)
             return max_ig_attr
-
-
-
+#########################################################################
+###############MAJORITY ERROR############################################
+#########################################################################
         elif self.criterion == 'majority_error':
             label_counts={}
+            label_sum=0
             for label in labels: #this increments the lable counts to find global entropy
                 if label not in label_counts:
                     label_counts[label]= 0
                 label_counts[label]+=1
+                label_sum+=1
             
-            mel={}
-            for attribute,l in enumerate(A): #loop through columns to determine information gain for each attr
-                if attribute not in mel:
-                    mel[attribute]={}
-                for label in labels: #this increments the lable counts to find global entropy
-                    if label not in mel[attribute]:
-                        mel[attribute][label]=0
-                    mel[attribute][label]+=1
-                    
-            print(mel)
-            # majority_label={}
-
+            # print(labels)
             # for attribute,l in enumerate(A): #loop through columns to determine information gain for each attr
-            maj_label=max(mel[attribute], key=mel[attribute].get)
+            maj_label=max(label_counts, key=label_counts.get)
+            # print(maj_label, label_counts)
             # print(majority_label)
 
-
-            
-            ME=
+            current_me= 1-label_counts[maj_label]/label_sum
+            # print('CURRENT ME IS ',current_me)
+            # ME=
             tot=len(labels)
             # for label in label_counts: #calculate global entropy
                 # current_gini-=(label_counts[label]/tot)**2
@@ -255,73 +248,70 @@ class DecisionTree:
                         if labels[i]==label:
                             # print(attribute,sample,label)
                             feature_counts[attribute][sample][label]+=1
+
+
+
                             
             # print('yoyo',feature_counts)
-            feature_gini={}  
+            majority_errors={}  
             for attribute,l in enumerate(feature_counts): #loop through columns to determine information gain for each attr
-                if attribute not in feature_gini:
-                    feature_gini[attribute]={}
+                if attribute not in majority_errors:
+                    majority_errors[attribute]={}
                 for value in feature_counts[attribute]: #loop through samples to accumulate values
-                        if value not in feature_gini[attribute]:
-                            feature_gini[attribute][value]=0.0
-                        feature_gini[attribute][value]=(feature_counts[attribute][value][label]/feature_outcome_counts[attribute][value]) #fractions
-                        print(attribute,feature_gini[attribute][value])
+                        if value not in majority_errors[attribute]:
+                            majority_errors[attribute][value]=0.0
+                        max_label= max(feature_counts[attribute][value], key=feature_counts[attribute][value].get)
+                        sum = 0
+                        for label in self.labels:
+                            sum+=feature_counts[attribute][value][label]
+                        majority_errors[attribute][value]=1- feature_counts[attribute][value][max_label]/sum
+                        # print(majority_errors[attribute][value], 'couunt is ',feature_counts[attribute][value][max_label], 'sum is ', sum)
             
-            
-            majority_label={}
-            print('here',feature_counts)
-            for attribute,l in enumerate(feature_counts): #loop through columns to determine information gain for each attr
-                if attribute not in majority_label:
-                    majority_label[attribute]={}
-                for value in feature_counts[attribute]: #loop through samples to accumulate values
-                    # for label in self.labels:
-                    majority_label[attribute]=max(feature_counts[attribute][value], key=feature_counts[attribute][value].get)
-            print(majority_label)
            #Feat outcome count is indexed by value
-            majority_error={}
-            for attr in feature_gini:
-                if attr not in majority_error:
-                    majority_error[attr]=0
-                for val in feature_gini[attr]:
-                    # print('feature entropy is ', feature_gini[attr][ent],feature_outcome_counts[attr][ent])
-                    majority_error[attr]=feature_counts[attr][val]/feature_counts[attr][majority_label[attr]]
+            # print('mes',majority_errors)
+            expected_me={}
+            for attr in majority_errors:
+                if attr not in expected_me:
+                    expected_me[attr]=0
+                for val in majority_errors[attr]:
+                    # print('fraction is ',feature_outcome_counts[attr][val], tot)
+                    expected_me[attr]+=majority_errors[attr][val]*(feature_outcome_counts[attr][val]/(tot))
             ig={}
             max_ig=0
             max_ig_attr=None
-            print(majority_error)
-            for attribute in feature_gini:
-                ig[attribute]=current_gini-expected_gini[attribute]
-                print('for attribute ',attribute,'ig is ', ig[attribute], 'child entr', feature_gini[attribute])
+            # print(expected_me)
+            for attribute in majority_errors:
+                ig[attribute]=current_me-expected_me[attribute]
+                # print('for attribute ',attribute,'ig is ', ig[attribute], 'child entr', majority_errors[attribute])
                 if ig[attribute]>max_ig:
                     max_ig=ig[attribute]
                     max_ig_attr= attribute
-            print('max ig is ', max_ig, 'attr', max_ig_attr)
+            if(max_ig_attr==None): max_ig_attr=attribute
+            # print('max ig is ', max_ig, 'attr', max_ig_attr)
+            # print(ig['asdf']) 
             return max_ig_attr
 
         else:
             return "whoops"
 
 
-    def id3(self, S, attributes, labels):
-        print('id3')
+    def id3(self, S, attributes, labels, depth=0):
+        # print('id3')
         first=labels[0]
         switch=0
         for i,l in enumerate(labels):
             if labels[i]!=first:
                 switch=1
         if switch==0:
-            print('all labels are the same and ')
+            # print('all labels are the same and ')
             if len(attributes)==0:
-                print('len of attr is 0')
+                # print('len of attr is 0')
                 leaf= Node()
                 leaf.type='leaf'
-                try:
-                        leaf.label=  statistics.mode(labels) 
-                except statistics.StatisticsError:
-                        leaf.label=labels[0]               
+                leaf.label= self.getMaxLabel(labels) 
                 return leaf
             else:
-                print('most common attr is ', first)
+                # print('most common attr is ', first)
                 leaf= Node()
                 leaf.type='leaf'
                 leaf.label=first
@@ -329,11 +319,25 @@ class DecisionTree:
         else:
             root= Node()
             root.type='root'
+            depth=depth+1
+            # print('MY DEPTH IS ',depth)
             a = self.bestSplit(S, labels)
             best_attr=attributes[a]
             root.attr=best_attr
-            print('starting id3 main statement size of attr is ',len(attributes), 'a is ', a, 'best attr is ',best_attr) 
-            print('features at a are',self.features[best_attr])
+            if depth ==self.max_depth:
+                # print('in max depth')
+                for v in self.features[best_attr]:
+                    branch= Node()
+                    branch.type = 'branch'
+                    branch.value=v
+                    root.next.append(branch)
+                    leaf= Node()
+                    leaf.type ='leaf'
+                    leaf.label= self.getMaxLabel(labels) 
+                    branch.next.append(leaf) #create leaf node
+                return root
+            # print('starting id3 main statement size of attr is ',len(attributes), 'a is ', a, 'best attr is ',best_attr) 
+            # print('features at a are',self.features[best_attr])
             for v in self.features[best_attr]: # want sv to be S where A=v v will be all values a can have & create branch NOTE: s.features isa  set
                 branch= Node()
                 branch.type = 'branch'
@@ -350,7 +354,7 @@ class DecisionTree:
                         mask[i]=False #want to append all features that have this value for this attr. add feat col
                     else:
                         count+=1
-                print('v is ', v, 'count is ', count)
+                # print('v is ', v, 'count is ', count)
                 # print(Sv.shape)
                 # print('mask shape',mask.shape)
                 Sv=Sv[:,mask]
@@ -360,22 +364,18 @@ class DecisionTree:
                 temp_labels=labels[mask]
                 # print(labels.shape)
                 if(count==0):
-                    print('adding leaf for root attr ', best_attr)
+                    # print('adding leaf for root attr ', best_attr)
                     leaf= Node()
                     leaf.type ='leaf'
-                    try:
-                        leaf.label=  statistics.mode(labels) 
-                    except statistics.StatisticsError:
-                        leaf.label=labels[0]
-                    branch.next.append(leaf) #create leaf node
-                    
+                    leaf.label= self.getMaxLabel(labels) 
+                    branch.next.append(leaf)
                 else:
                     temp_attributes=np.delete(attributes, a)
-                    print('BEST ATTR INDEX IS ', a, 'and attre is ', best_attr)
-                    print('attributes before delete are', attributes)
-                    print('after delete are ', temp_attributes)
-                    print('APPENDING NEXT TO ATTRIBUTE' , best_attr)
-                    nxt_root= self.id3(Sv,temp_attributes,temp_labels)
+                    # print('BEST ATTR INDEX IS ', a, 'and attre is ', best_attr)
+                    # print('attributes before delete are', attributes)
+                    # print('after delete are ', temp_attributes)
+                    # print('APPENDING NEXT TO ATTRIBUTE' , best_attr)
+                    nxt_root= self.id3(Sv,temp_attributes,temp_labels,depth)
                     # nxt_root.value=v
                     branch.next.append(nxt_root)
                 #run id3 now
@@ -383,6 +383,18 @@ class DecisionTree:
             return root
             
             
+    def getMaxLabel(self,labels):
+        # print('HERERERERERERERER')
+        counts={}
+        for label in labels:
+            if label not in counts:
+                counts[label]=0
+            counts[label]+=1
+        m=max(counts, key=counts.get)
+
+        # print('labels', labels,'max',m, 'counts',counts)
+        return  m
+
 
     def print(self, root, indent=""):
         print(indent,'node type is  ', root.type,'len next is ', len(root.next))
@@ -401,22 +413,22 @@ class DecisionTree:
     #features as features x samples 
     #labels correspond to line in features
     def fit(self, training_features, training_labels, criterion = 'IG',max_depth =None ):
-        print('fit')
+        # print('fit')
         # first looop through features to define self.features
         for i,feature in enumerate(training_features):
             for sample in training_features[i]:
                 if i not in self.features:
                     self.features[i]=set()
                 self.features[i].add(sample)
-        print(self.features)
+        # print(self.features)
 
         for label in training_labels:
             self.labels.add(label)
 
-        print(self.labels)
+        # print(self.labels)
         self.attributes= np.arange(0,len(self.features)) # attributes contains index to each attr
         self.root = self.id3(training_features, self.attributes, training_labels)
-        self.print(self.root)
+        # self.print(self.root)
         return self
 
 
@@ -428,7 +440,7 @@ class DecisionTree:
                 if r.value==feature[root.attr]:
                     return self.find_label(feature, r)
         elif root.type=='branch':
-            # print('branch and value is ',root.value)
+            # print('branch and value is ',root.value,' root next is ', len(root.next))
             return self.find_label(feature, root.next[0])
         elif root.type=='leaf':
             # print('leaf and label is ',root.label)
@@ -437,7 +449,7 @@ class DecisionTree:
             
 
     def predict(self, features):
-        print('predict')
+        # print('predict')
         results=[]
         for feat in features:
             # print('feature is',feat)

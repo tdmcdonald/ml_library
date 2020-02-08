@@ -19,11 +19,12 @@ with open( './data/car/train.csv' , 'r' ) as f:
         sample_num+=1
 
 features=np.asarray(data)
+pred_features= features
 features=np.transpose(features)
 labels= np.asarray(lable)
 print(features.shape)
-dt = DecisionTree.DecisionTree('majority_error',12)
-dt.fit(features,labels)
+
+
 
 sample_num = 0
 data = [] 
@@ -43,12 +44,38 @@ with open( './data/car/test.csv' , 'r' ) as f:
         sample_num+=1
 
 testfeatures=np.asarray(data)
-testfeatures=np.transpose(testfeatures)
-predictions= dt.predict(testfeatures)
-error_num=0
-for i,p in enumerate(predictions):
-    # print('prediction is ', p, 'actual is ', labels[i])
-    if p!=labels[i]:
-        error_num+=1
+print('for training data')
+for split in ['entropy','gini','majority_error']:
+    print('for', split)
+    for i in range(1,7):
+        # print('for',i)
+        dt = DecisionTree.DecisionTree(split,i)
+        dt.fit(features,labels)
+        # testfeatures=np.transpose(testfeatures)
+        predictions= dt.predict(pred_features)
+        error_num=0
+        for i,p in enumerate(predictions):
+            if p!=labels[i]:
+                # print('prediction is ', p, 'actual is ', labels[i])
+                error_num+=1
+                # print('error at ', i)
 
-print('total incorrect predictions is: ', error_num)
+        print(error_num/len(predictions))
+print('for testing data')
+for split in ['entropy','gini','majority_error']:
+    print('for', split)
+    for i in range(1,7):
+        # print('for',i)
+        dt = DecisionTree.DecisionTree(split,i)
+        dt.fit(features,labels)
+        # testfeatures=np.transpose(testfeatures)
+        predictions= dt.predict(testfeatures)
+        error_num=0
+        for i,p in enumerate(predictions):
+            if p!=labels[i]:
+                # print('prediction is ', p, 'actual is ', labels[i])
+                error_num+=1
+                # print('error at ', i)
+        print(error_num/len(predictions))
+        
+
