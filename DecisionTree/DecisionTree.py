@@ -20,6 +20,10 @@ class DecisionTree:
         self.root_node= None
         self.attributes= None
         self.current_depth=-1
+        self.numerical_cols= None
+        self.medians=None
+        self.unknown_cols=None
+        self.modes=None
 
     def bestSplit(self, A, labels): #A will have the same dims as self.features
         # print('in best split a Dims are ',A.shape,'labels',labels)
@@ -104,6 +108,8 @@ class DecisionTree:
                 if ig[attribute]>max_ig:
                     max_ig=ig[attribute]
                     max_ig_attr= attribute
+                if(max_ig_attr==None):
+                    max_ig_attr=attribute
             # print('max ig is ', max_ig, 'attr', max_ig_attr)
             return max_ig_attr
                    
@@ -186,6 +192,8 @@ class DecisionTree:
                 if ig[attribute]>max_ig:
                     max_ig=ig[attribute]
                     max_ig_attr= attribute
+                if(max_ig_attr==None):
+                    max_ig_attr=attribute
             # print('max ig is ', max_ig, 'attr', max_ig_attr)
             return max_ig_attr
 #########################################################################
@@ -286,7 +294,8 @@ class DecisionTree:
                 if ig[attribute]>max_ig:
                     max_ig=ig[attribute]
                     max_ig_attr= attribute
-            if(max_ig_attr==None): max_ig_attr=attribute
+            if(max_ig_attr==None):
+                max_ig_attr=attribute
             # print('max ig is ', max_ig, 'attr', max_ig_attr)
             # print(ig['asdf']) 
             return max_ig_attr
@@ -325,7 +334,7 @@ class DecisionTree:
             best_attr=attributes[a]
             root.attr=best_attr
             if depth ==self.max_depth:
-                # print('in max depth')
+                # print('in max depth', 'best attr', best_attr,'attributes are ', attributes, 'a is ',a)
                 for v in self.features[best_attr]:
                     branch= Node()
                     branch.type = 'branch'
@@ -334,6 +343,7 @@ class DecisionTree:
                     leaf= Node()
                     leaf.type ='leaf'
                     leaf.label= self.getMaxLabel(labels) 
+                    # print('setting label to ',leaf.label)
                     branch.next.append(leaf) #create leaf node
                 return root
             # print('starting id3 main statement size of attr is ',len(attributes), 'a is ', a, 'best attr is ',best_attr) 
@@ -412,19 +422,60 @@ class DecisionTree:
 
     #features as features x samples 
     #labels correspond to line in features
-    def fit(self, training_features, training_labels, criterion = 'IG',max_depth =None ):
-        # print('fit')
+    def fit(self, training_feats, training_labels,  numerical_cols=[],unknown_cols=[] ):
+        # print('fit',training_feats)
         # first looop through features to define self.features
+        training_features=copy.copy(training_feats)
+        self.numerical_cols=numerical_cols
+        self.unknown_cols=unknown_cols
+        # print('starting fit')
+        if(len(self.numerical_cols)>0):    
+            medians={}
+            for i,v in enumerate(training_features):
+                # print(training_features[i])
+                if i in numerical_cols:
+                    # print(training_features[i].dtype)
+                    y=training_features[i].astype(np.float)
+                    medians[i]=statistics.median(y)
+                    # medians[i]=statistics.median(training_features[i])
+                    # print('median is ', medians[i])
+            for i,v in enumerate(training_features):
+                if i in numerical_cols:
+                    for j,a in enumerate(training_features[i]):
+                        if(float(training_features[i][j])>=medians[i]):
+                            training_features[i][j]='above'
+                        else:
+                            training_features[i][j]='below'
+        # print(self.features)
+            self.medians=medians
+        if(len(self.unknown_cols)>0):    
+            modes={}
+            for i,v in enumerate(training_features):
+                # print(training_features[i])
+                if i in self.unknown_cols:
+                    # print(training_features[i].dtype)
+                    # print('before temp ', training_features[i])
+                    temp=training_features[i][training_features[i]!='unknown']
+                    # print('after temp',temp)
+                    modes[i]=statistics.mode(training_features[i])
+                    # medians[i]=statistics.median(training_features[i])
+                    # print('median is ', medians[i])
+            for i,v in enumerate(training_features):
+                if i in self.unknown_cols:
+                    for j,a in enumerate(training_features[i]):
+                        if(training_features[i][j]=="unknown"):
+                            training_features[i][j]=modes[i]
+
+            self.modes=modes
+        # print("i AM HERE",modes)
         for i,feature in enumerate(training_features):
             for sample in training_features[i]:
                 if i not in self.features:
                     self.features[i]=set()
                 self.features[i].add(sample)
-        # print(self.features)
-
         for label in training_labels:
             self.labels.add(label)
-
+        # print('self labels', self.labels)
         # print(self.labels)
         self.attributes= np.arange(0,len(self.features)) # attributes contains index to each attr
         self.root = self.id3(training_features, self.attributes, training_labels)
@@ -448,9 +499,34 @@ class DecisionTree:
         
             
 
-    def predict(self, features):
-        # print('predict')
+    def predict(self, feats):
+        # print('predict',features)
         results=[]
+        features=copy.copy(feats)
+        if(len(self.numerical_cols)>0):    
+            for i,v in enumerate(features):
+                # print(i,features[i])
+                for j,a in enumerate(features[i]):
+                    if j in self.numerical_cols:
+                        # print(j)
+                        if(float(features[i][j])>=self.medians[j]):
+                            features[i][j]='above'
+                        else:
+                            features[i][j]='below'
+        if(len(self.unknown_cols)>0):    
+            modes={}
+            for i,v in enumerate(features):
+                # print(training_features[i])
+                if i in self.unknown_cols:
+                    # print(training_features[i].dtype)
+                    modes[i]=statistics.mode(features[i])
+                    # medians[i]=statistics.median(training_features[i])
+                    # print('median is ', medians[i])
+            for i,v in enumerate(features):
+                if i in self.unknown_cols:
+                    for j,a in enumerate(features[i]):
+                        if(features[i][j]=="unknown"):
+                            features[i][j]=modes[i]
         for feat in features:
             # print('feature is',feat)
             res= self.find_label(feat,self.root)

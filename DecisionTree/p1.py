@@ -1,6 +1,6 @@
 import DecisionTree
 import numpy as np
-print('main')
+print('Starting p1')
 sample_num = 0
 data = [] 
 lable = []
@@ -21,8 +21,7 @@ with open( './data/car/train.csv' , 'r' ) as f:
 features=np.asarray(data)
 pred_features= features
 features=np.transpose(features)
-labels= np.asarray(lable)
-print(features.shape)
+train_labels= np.asarray(lable)
 
 
 
@@ -44,18 +43,19 @@ with open( './data/car/test.csv' , 'r' ) as f:
         sample_num+=1
 
 testfeatures=np.asarray(data)
+test_labels=np.asarray(lable)
 print('for training data')
 for split in ['entropy','gini','majority_error']:
     print('for', split)
     for i in range(1,7):
         # print('for',i)
         dt = DecisionTree.DecisionTree(split,i)
-        dt.fit(features,labels)
+        dt.fit(features,train_labels)
         # testfeatures=np.transpose(testfeatures)
         predictions= dt.predict(pred_features)
         error_num=0
         for i,p in enumerate(predictions):
-            if p!=labels[i]:
+            if p!=train_labels[i]:
                 # print('prediction is ', p, 'actual is ', labels[i])
                 error_num+=1
                 # print('error at ', i)
@@ -67,12 +67,12 @@ for split in ['entropy','gini','majority_error']:
     for i in range(1,7):
         # print('for',i)
         dt = DecisionTree.DecisionTree(split,i)
-        dt.fit(features,labels)
+        dt.fit(features,train_labels)
         # testfeatures=np.transpose(testfeatures)
         predictions= dt.predict(testfeatures)
         error_num=0
         for i,p in enumerate(predictions):
-            if p!=labels[i]:
+            if p!=test_labels[i]:
                 # print('prediction is ', p, 'actual is ', labels[i])
                 error_num+=1
                 # print('error at ', i)

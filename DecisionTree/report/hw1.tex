@@ -576,9 +576,51 @@ The percent error for each split type and maximum depth using the \emph\textbf{t
 
 \item~[25 points] 
 \begin{enumerate}
-	\item~[10 points] Let us consider ``unkown'' as a particular attribute value, and hence we do not have any missing attributes for both training and test. Vary the maximum  tree depth from $1$ to $16$ --- for each setting, run your algorithm to learn a decision tree, and use the tree to  predict both the training  and test examples. Again, if your tree cannot grow up to $16$ levels, stop at the maximum level. Report in a table the average prediction errors on each dataset when you use information gain, majority error and gini index heuristics, respectively.
+	\item~[10 points]
 	
-	\item~[10 points] Let us consider "unkown" as  attribute value missing. Here we simply complete it with the majority of other values of the same attribute in the training set.   Vary the maximum  tree depth from $1$ to $16$ --- for each setting, run your algorithm to learn a decision tree, and use the tree to  predict both the training  and test examples. Report in a table the average prediction errors on each dataset when you use information gain, majority error and gini index heuristics, respectively.
+	The results are shown in the tabel below. The percent error for the training data is on the left, and the percent error for the testing data is on the right.
+
+	\begin{tabular}{|l|l|l|l|}
+		\hline
+		   & IG & GI & ME\\ \hline
+		1  & 0.1192           & 0.1192     & 0.1192         \\ \hline
+		2  & 0.1192           & 0.1088     & 0.1088         \\ \hline
+		3  & 0.106            & 0.1042     & 0.1042         \\ \hline
+		4  & 0.1006           & 0.0934     & 0.096          \\ \hline
+		5  & 0.0792           & 0.0748     & 0.0812         \\ \hline
+		6  & 0.0612           & 0.0598     & 0.0712         \\ \hline
+		7  & 0.0472           & 0.0468     & 0.0686         \\ \hline
+		8  & 0.0348           & 0.0346     & 0.0642         \\ \hline
+		9  & 0.0286           & 0.0266     & 0.0572         \\ \hline
+		10 & 0.023            & 0.0212     & 0.0484         \\ \hline
+		11 & 0.017            & 0.017      & 0.0406         \\ \hline
+		12 & 0.0144           & 0.0146     & 0.0322         \\ \hline
+		13 & 0.0136           & 0.0138     & 0.0262         \\ \hline
+		14 & 0.0136           & 0.0136     & 0.0202         \\ \hline
+		15 & 0.0136           & 0.0136     & 0.0158         \\ \hline
+		16 & 0.0136           & 0.0136     & 0.0142         \\ \hline
+		\end{tabular}                  
+		\begin{tabular}{|l|l|l|l|}
+			\hline
+			   & IG & GI & ME \\ \hline
+			1  & 0.1192           & 0.1192     & 0.1192         \\ \hline
+			2  & 0.1192           & 0.1442     & 0.1442         \\ \hline
+			3  & 0.139            & 0.1472     & 0.1472         \\ \hline
+			4  & 0.1576           & 0.1582     & 0.1558         \\ \hline
+			5  & 0.1654           & 0.1684     & 0.1594         \\ \hline
+			6  & 0.1768           & 0.1814     & 0.1642         \\ \hline
+			7  & 0.1884           & 0.1908     & 0.1634         \\ \hline
+			8  & 0.1948           & 0.1978     & 0.1654         \\ \hline
+			9  & 0.202            & 0.2042     & 0.1726         \\ \hline
+			10 & 0.2106           & 0.215      & 0.1776         \\ \hline
+			11 & 0.212            & 0.216      & 0.1826         \\ \hline
+			12 & 0.2126           & 0.2164     & 0.195          \\ \hline
+			13 & 0.2144           & 0.2184     & 0.1974         \\ \hline
+			14 & 0.2146           & 0.2186     & 0.2024         \\ \hline
+			15 & 0.2146           & 0.2186     & 0.2048         \\ \hline
+			16 & 0.2146           & 0.2186     & 0.2056         \\ \hline
+			\end{tabular}
+	\item~[10 points] 
 	
 	
 	\item~[5 points] What can you conclude by comparing the training errors and the test errors, with different tree depths, as well as different ways to deal with "unkown" attribute values?
