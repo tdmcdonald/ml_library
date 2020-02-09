@@ -32,41 +32,6 @@
 \maketitle
 
 \input{emacscomm}
-{\footnotesize
-	\begin{itemize}
-		\item You are welcome to talk to other members of the class about
-		the homework. I am more concerned that you understand the
-		underlying concepts. However, you should write down your own
-		solution. Please keep the class collaboration policy in mind.
-		
-		\item Feel free discuss the homework with the instructor or the TAs.
-		
-		\item Your written solutions should be brief and clear. You need to
-		show your work, not just the final answer, but you do \emph{not}
-		need to write it in gory detail. Your assignment should be {\bf no
-			more than 15 pages}. Not that you do not need to include the problem description. Every extra page will cost a point.
-		
-		\item Handwritten solutions will not be accepted.
-		
-		
-		\item {\em Your code should run on the CADE machines}. You should
-		include a shell script, {\tt run.sh}, that will execute your code
-		in the CADE environment. Your code should produce similar output
-		to what you include in your report.
-		
-		You are responsible for ensuring that the grader can execute the
-		code using only the included script. If you are using an
-		esoteric programming language, you should make sure that its
-		runtime is available on CADE.
-		
-		\item Please do not hand in binary files! We will {\em not} grade
-		binary submissions.
-		
-		\item The homework is due by \textbf{midnight of the due date}. Please submit
-		the homework on Canvas.
-		
-	\end{itemize}
-}
 
 
 \section{Decision Tree [40 points + 10 bonus]}
@@ -90,8 +55,7 @@
 \begin{enumerate}
 \item~[7 points] Decision tree construction. 
 \begin{enumerate}
-\item~[5 points] Use the ID3 algorithm with information gain to leBarn a decision tree from the training dataset in Table 1. Please list every step in your tree construction, including the data subsets, the attributes, and how you calculate the information gain of each attribute and how you split the dataset according to the selected attribute. Please also give a full structure of the tree. You can manually  draw the tree structure,  convert the picture into a PDF/EPS/PNG/JPG format and include it in your homework submission; or instead, you can  represent the tree with a conjunction of prediction rules as we discussed in the lecture. 
-\\\\
+\item~[5 points] \\\\
 For the first step, we find the best split for the data using information gain. 
 
 We first find the current entropy for the set of examples, using the equation $H(p)=-\sum^k_{i=1}p_ilog(p_i)$
@@ -186,12 +150,12 @@ The tree is now fully contructed:
 \\\\
 INSERT PDF
 \\\\
-\item~[2 points] Write the boolean function which your decision tree represents. Please use a table to describe the function --- the columns are the input variables and label, \ie $x_1$, $x_2$, $x_3$, $x_4$ and $y$; the rows are different input and  function values. 
+\item~[2 points] 
 `\end{enumerate}
-\item~[17 points] Let us use a training dataset to learn a decision tree about whether to play tennis (\textbf{Page 43, Lecture: Decision Tree Learning}, accessible by clicking the link \href{http://www.cs.utah.edu/~zhe/teach/pdf/decision-trees-learning.pdf}{http://www.cs.utah.edu/\textasciitilde zhe/teach/pdf/decision-trees-learning.pdf}). In the class, we have shown how to use information gain to construct the tree in ID3 framework.  
+\item~[17 points] 
 \begin{enumerate}
-	\item~[7 points] Now, please use majority error (ME) to calculate the gain, and select the best feature to split the data in ID3 framework. As in problem 1, please list every step in your tree construction,  the attributes,  how you calculate the gain of each attribute and how you split the dataset according to the selected attribute. Please also give a full structure of the tree.
-
+	\item~[7 points]
+	
 Majority Error:
 
 Current Majority Error:  5 negative examples, 9 positive examples. If positive chosen, error would be 5/14.
@@ -209,7 +173,7 @@ Current Majority Error:  5 negative examples, 9 positive examples. If positive c
 	H(N)    & =6/7 & =1/7 & =7/14 & 0.1428571429 & 0.07142857143 \\ \hline
 	H(L)    & =0   & =0   & =0    & 0            & 0             \\ \hline
 	W(S)    & =3/6 & =3/6 & =6/14 & 0.5          & 0.2142857143  \\ \hline
-	W(W)    & =6/8 & =2/8 & =8/16 & 0.25         & 0.125         \\ \hline
+	W(W)    & =6/8 & =2/8 & =8/16 & 0.25         & 0.1428571429   \\ \hline
 	\end{tabular}
 
 	\begin{tabular}{|l|l|l|}
@@ -218,7 +182,7 @@ Current Majority Error:  5 negative examples, 9 positive examples. If positive c
 		O       & 0.2857142857 & 0.07142857143 \\ \hline
 		T       & 0.3571428571 & 0             \\ \hline
 		H       & 0.2857142857 & 0.07142857143 \\ \hline
-		W       & 0.3392857143 & 0.01785714285 \\ \hline
+		W       & 0.3571428571 & 0			   \\ \hline
 		\end{tabular}
 
 
@@ -288,8 +252,7 @@ Current Majority Error:  5 negative examples, 9 positive examples. If positive c
 		For the S subset, all the labels have the same value so we append a leaf with label 0.
 		
 		The tree is now complete.
-	\item~[7 points] Please use gini index (GI) to calculate the gain, and conduct tree learning with ID3 framework. List every step and the tree structure.
-	
+	\item~[7 points] 
 
 	gini index: $G(p)=1-\sum^k_{i=1}p_k^2$
 
@@ -308,7 +271,7 @@ Current Majority Error:  5 negative examples, 9 positive examples. If positive c
 		H(N)    & =6/7 & =1/7 & =7/14 & 0.2448979592 & 0.1224489796 \\ \hline
 		H(L)    & =0   & =0   & =0    & 1            & 0            \\ \hline
 		W(S)    & =3/6 & =3/6 & =6/14 & 0.5          & 0.2142857143 \\ \hline
-		W(W)    & =6/8 & =2/8 & =8/16 & 0.375        & 0.1875       \\ \hline
+		W(W)    & =6/8 & =2/8 & =8/14 & 0.375        & 0.2142857143  \\ \hline
 		\end{tabular}
 	
 		\begin{tabular}{|l|l|l|}
@@ -317,7 +280,7 @@ Current Majority Error:  5 negative examples, 9 positive examples. If positive c
 			O       & 0.3428571429 & 0.1163265306  \\ \hline
 			T       & 0.4404761905 & 0.01870748298 \\ \hline
 			H       & 0.3673469388 & 0.09183673468 \\ \hline
-			W       & 0.4017857143 & 0.05739795917 \\ \hline
+			W       & 0.4285714286 & 0.03061224489 \\ \hline
 			\end{tabular}
 
 The best feature to split on is Outlook, since it has the highst gain. 
@@ -390,12 +353,177 @@ The tree is now complete.
 	\item~[3 points] Compare the two trees you just created with the one we built in the class (see Page 58 of the lecture slides). Are there any differences? Why? 
 \end{enumerate}
 
-\item~[16 points] Continue with the same training data in Problem 2. Suppose before the tree construction, we receive one more training instance where Outlook's value is missing: \{Outlook: Missing, Temperature: Mild, Humidity: Normal, Wind: Weak, Play: Yes\}. 
+\item~[16 points] 
 \begin{enumerate}
-\item~[3 points] Use the most common value in the training data as the missing  value, and calculate the information gains of the four features. Note that if there is a tie for the most common value, you can choose any value in the tie.  Indicate the best feature. 
-\item~[3 points] Use the most common value among the  training instances with the same label, namely, their attribute "Play" is "Yes", and calculate the information gains of the four features. Again if there is a tie, you can choose any value in the tie. Indicate the best feature.
-\item~[3 points] Use the fractional counts to infer the feature values, and then calculate the information gains of the four features. Indicate the best feature.
-\item~[7 points] Continue with the fractional examples, and build the whole free with information gain. List every step and the final tree structure.  
+\item~[3 points] 
+
+The most common value for Outlook is rainy (chosen over sunny). 
+
+The current entropy is $-(10/15)*log2(10/15)-(5/15)*log2(5/15)= 0.91829583405$
+
+For calculating the information gain:
+
+\begin{tabular}{|l|l|l|l|l|l|}
+	\hline
+	feature & p    & n    & tot   & IG           & Weighted     \\ \hline
+	O(S)    & =2/5 & =3/5 & =5/15 & 0.9709505945 & 0.3236501982 \\ \hline
+	O(O)    & =1   & =0   & =4/15 & 0            & 0            \\ \hline
+	O(R)    & =4/6 & =2/6 & =6/15 & 0.9182958341 & 0.3673183336 \\ \hline
+	T(H)    & =1/2 & =1/2 & =4/15 & 1            & 0.2666666667 \\ \hline
+	T(M)    & =5/7 & =2/7 & =7/15 & 0.8631205686 & 0.4027895987 \\ \hline
+	T(C)    & =3/4 & =1/4 & =4/15 & 0.8112781245 & 0.2163408332 \\ \hline
+	H(H)    & =3/7 & =4/7 & =7/15 & 0.985228136  & 0.4597731301 \\ \hline
+	H(N)    & =7/8 & =1/8 & =8/15 & 0.5435644432 & 0.2899010364 \\ \hline
+	H(L)    & =0   & =0   & =0    & 0            & 0            \\ \hline
+	W(S)    & =3/6 & =3/6 & =6/15 & 1            & 0.4          \\ \hline
+	W(W)    & =7/9 & =2/9 & =9/15 & 0.7642045065 & 0.4585227039 \\ \hline
+	\end{tabular}
+
+	\begin{tabular}{|l|l|l|}
+		\hline
+		feature & Expected IG  & Gain          \\ \hline
+		O       & 0.6909685318 & 0.2273273023  \\ \hline
+		T       & 0.8857970985 & 0.03249873553 \\ \hline
+		H       & 0.7496741665 & 0.1686216675  \\ \hline
+		W       & 0.8585227039 & 0.05977313014 \\ \hline
+		\end{tabular}
+
+	The best feature is Outlook
+
+\item~[3 points] 
+
+In this case, the most common label is overcast, with 4 postive labels. 
+
+For calculating the gain:
+
+\begin{tabular}{|l|l|l|l|l|l|}
+	\hline
+	feature & p    & n    & tot   & IG           & Weighted     \\ \hline
+	O(S)    & =2/5 & =3/5 & =5/15 & 0.9709505945 & 0.3236501982 \\ \hline
+	O(O)    & =1   & =0   & =5/15 & 0            & 0            \\ \hline
+	O(R)    & =3/5 & =2/5 & =5/15 & 0.9709505945 & 0.3236501982 \\ \hline
+	T(H)    & =1/2 & =1/2 & =4/15 & 1            & 0.2666666667 \\ \hline
+	T(M)    & =5/7 & =2/7 & =7/15 & 0.8631205686 & 0.4027895987 \\ \hline
+	T(C)    & =3/4 & =1/4 & =4/15 & 0.8112781245 & 0.2163408332 \\ \hline
+	H(H)    & =3/7 & =4/7 & =7/15 & 0.985228136  & 0.4597731301 \\ \hline
+	H(N)    & =7/8 & =1/8 & =8/15 & 0.5435644432 & 0.2899010364 \\ \hline
+	H(L)    & =0   & =0   & =0    & 0            & 0            \\ \hline
+	W(S)    & =3/6 & =3/6 & =6/15 & 1            & 0.4          \\ \hline
+	W(W)    & =7/9 & =2/9 & =9/15 & 0.7642045065 & 0.4585227039 \\ \hline
+	\end{tabular}
+
+	\begin{tabular}{|l|l|l|}
+		\hline
+		feature & Expected IG  & Gain          \\ \hline
+		O       & 0.6473003963 & 0.2709954377  \\ \hline
+		T       & 0.8857970985 & 0.03249873553 \\ \hline
+		H       & 0.7496741665 & 0.1686216675  \\ \hline
+		W       & 0.8585227039 & 0.05977313014 \\ \hline
+		\end{tabular}
+
+Again, the best attribute is Outlook.
+
+
+\item~[3 points] 
+
+
+\begin{tabular}{|l|l|l|l|l|l|}
+	\hline
+	feature & p             & n    & tot            & IG           & Weighted     \\ \hline
+	O(S)    & =(2+(5/15))/5 & =3/5 & =(5+(5/15))/15 & 0.9552960042 & 0.3396608015 \\ \hline
+	O(O)    & =1+5/15       & =0   & =(4+(5/15))/15 & 0            & 0            \\ \hline
+	O(R)    & =(3+(5/15))/5 & =2/5 & =(5+(5/15))/15 & 0.9187462384 & 0.3266653292 \\ \hline
+	T(H)    & =1/2          & =1/2 & =4/15          & 1            & 0.2666666667 \\ \hline
+	T(M)    & =5/7          & =2/7 & =7/15          & 0.8631205686 & 0.4027895987 \\ \hline
+	T(C)    & =3/4          & =1/4 & =4/15          & 0.8112781245 & 0.2163408332 \\ \hline
+	H(H)    & =3/7          & =4/7 & =7/15          & 0.985228136  & 0.4597731301 \\ \hline
+	H(N)    & =7/8          & =1/8 & =8/15          & 0.5435644432 & 0.2899010364 \\ \hline
+	H(L)    & =0            & =0   & =0             & 0            & 0            \\ \hline
+	W(S)    & =3/6          & =3/6 & =6/15          & 1            & 0.4          \\ \hline
+	W(W)    & =7/9          & =2/9 & =9/15          & 0.7642045065 & 0.4585227039 \\ \hline
+	\end{tabular}
+
+	\begin{tabular}{|l|l|l|}
+		\hline
+		feature & Expected IG  & Gain          \\ \hline
+		O       & 0.6663261307 & 0.2519697034  \\ \hline
+		T       & 0.8857970985 & 0.03249873553 \\ \hline
+		H       & 0.7496741665 & 0.1686216675  \\ \hline
+		W       & 0.8585227039 & 0.05977313014 \\ \hline
+		\end{tabular}
+
+
+Again, the best attribute is Outlook.
+
+
+\item~[7 points] 
+
+For each value of Outlook:
+
+For O=S:
+
+The subset looks like this:
+
+\begin{tabular}{|l|l|l|l|l|}
+	\hline
+	O & T & H & W & Play \\ \hline
+	S & H & H & W & 0    \\ \hline
+	S & H & H & S & 0    \\ \hline
+	S & M & H & W & 0    \\ \hline
+	S & C & N & W & 1    \\ \hline
+	S & M & N & S & 1    \\ \hline
+	\end{tabular}
+
+The best split is Humidity, since it has the most gain (same process as above).
+
+We return id3 for the subsets (H, N)
+
+For the H subest, all the labels have the same value (0), so we append a leave with label 0.
+
+For the N subset, all the labels have the same value so we append a leaf with label 1.
+
+Since the L subset is empty  we append a leaf node with the most common label which is 0. 
+
+For O=O:
+
+The subset looks like this:
+
+\begin{tabular}{|l|l|l|l|l|}
+	\hline
+	O & T & H & W & Play \\ \hline
+	O & H & H & W & 1    \\ \hline
+	O & C & N & S & 1    \\ \hline
+	O & M & H & S & 1    \\ \hline
+	O & H & N & W & 1    \\ \hline
+	\end{tabular}
+
+
+Since the subset contains the same labels, we append a leaf node with label 1.
+
+For O=R:
+
+The subset looks like this:
+
+\begin{tabular}{|l|l|l|l|l|}
+	\hline
+	O & T & H & W & Play \\ \hline
+	R & M & H & W & 1    \\ \hline
+	R & C & N & W & 1    \\ \hline
+	R & C & N & S & 0    \\ \hline
+	R & M & N & W & 1    \\ \hline
+	R & M & H & S & 0    \\ \hline
+	\end{tabular}
+
+
+The best split is Wind, since it has the most gain (same process as above).
+
+We return id3 for each subest (W, S)
+
+For the W subest, all the labels have the same value, so we append a leave with label 1.
+
+For the S subset, all the labels have the same value so we append a leaf with label 0.
+
+The tree is now complete.
 
 \end{enumerate}
 \item ~[\textbf{Bonus question 1}]~[5 points].  Prove that the information gain is always non-negative.  That means, as long as we split the data, the purity will never get worse! (Hint: use convexity)
@@ -405,14 +533,13 @@ The tree is now complete.
 
 \section{Decision Tree Practice [60 points]}
 \begin{enumerate}
-	\item~[5 Points] Starting from this assignment, we will build a light-weighted machine learning library. 
-To this end, you will first need to create a code repository in \href{https://github.com/}{Github.com}. Please refer to the short introduction in the appendix and the \href{https://guides.github.com/activities/hello-world/}{official tutorial} to create an account and repository. Please commit a README.md file in your repository, and write one sentence: "This is a machine learning library developed by \textbf{Your Name} for CS5350/6350 in University of Utah".  You can now create a first folder, "DecisionTree". Please leave the link to your repository in the homework submission. We will check if you have successfully created it. 
+	\item~[5 Points] 
+	
+\item~[30 points] 
 
 
-\item~[30 points] We will implement a decision tree learning algorithm for car evaluation task. The dataset is from UCI repository(\url{https://archive.ics.uci.edu/ml/datasets/car+evaluation}). Please download the processed dataset (car.zip) from Canvas.  In this task, we have $6$ car attributes, and the label is the evaluation of the car. The attribute and label values are listed in the file ``data-desc.txt". All the attributes are categorical.  The training data are stored in the file ``train.csv'', consisting of $1,000$ examples. The test data are stored in ``test.csv'', and comprise $728$ examples. In both training and test datasets, attribute values are separated by commas; the file ``data-desc.txt''  lists the attribute names in each column. 
-\\
 
-\noindent Note: we highly recommend you to use Python for implementation, because it is very convenient to load the data and handle strings. For example, the following snippet reads the CSV file line by line and split the values of the attributes and the label into a list, ``terms''. You can also use ``dictionary'' to store the categorical attribute values. In the web are numerous tutorials and examples for Python. if you have issues, just google it!
+
 \begin{lstlisting}
 with open(CSVfile, 'r') as f:
      for line in f:
@@ -420,8 +547,8 @@ with open(CSVfile, 'r') as f:
             process one training example
 \end{lstlisting}
 \begin{enumerate}
-\item~[15 points] Implement the ID3 algorithm that supports, information gain,  majority error and gini index to select attributes for data splits. Besides, your ID3 should allow users to set the maximum tree depth. Note: you do not need to convert categorical attributes into binary ones and your tree can be wide here. 
-\item~[10 points] Use your implemented algorithm to learn decision trees from the training data. Vary the maximum  tree depth from $1$ to $6$  --- for each setting, run your algorithm to learn a decision tree, and use the tree to  predict both the training  and test examples. Note that if your tree cannot grow up to 6 levels, then you can stop at the maximum level. Report in a table the average prediction errors on each dataset when you use information gain, majority error and gini index heuristics, respectively.
+\item~[15 points] 
+\item~[10 points] 
 
 The percent error for each split type and maximum depth using the \emph\textbf{trianing} data is reported below:
 
@@ -447,7 +574,7 @@ The percent error for each split type and maximum depth using the \emph\textbf{t
 \end{enumerate}
 
 
-\item~[25 points] Next, modify your implementation a little bit to support numerical attributes. We will use a simple approach to convert a numerical feature to a binary one. We choose the media (NOT the average) of the attribute values (in the training set) as the threshold, and examine if the feature is bigger (or less) than the threshold. We will use another real dataset from UCI repository(\url{https://archive.ics.uci.edu/ml/datasets/Bank+Marketing}). This dataset contains $16$ attributes, including both numerical and categorical ones. Please download the processed dataset from Canvas (bank.zip).  The attribute and label values are listed in the file ``data-desc.txt". The training set is the file ``train.csv'', consisting of $5,000$ examples, and the test  ``test.csv'' with $5,000$ examples as well.  In both training and test datasets, attribute values are separated by commas; the file ``data-desc.txt''  lists the attribute names in each column. 
+\item~[25 points] 
 \begin{enumerate}
 	\item~[10 points] Let us consider ``unkown'' as a particular attribute value, and hence we do not have any missing attributes for both training and test. Vary the maximum  tree depth from $1$ to $16$ --- for each setting, run your algorithm to learn a decision tree, and use the tree to  predict both the training  and test examples. Again, if your tree cannot grow up to $16$ levels, stop at the maximum level. Report in a table the average prediction errors on each dataset when you use information gain, majority error and gini index heuristics, respectively.
 	
