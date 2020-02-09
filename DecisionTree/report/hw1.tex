@@ -18,7 +18,7 @@
 \newcommand{\bw}{{\bf w}}
 
 \title{CS 5350/6350: Machine Learining \semester}
-\author{Homework \assignmentId}
+\author{Torin McDonald, u0940253, Homework \assignmentId}
 \date{Handed out: \releaseDate\\
 	Due: \dueDate}
 
@@ -35,6 +35,9 @@
 
 
 \section{Decision Tree [40 points + 10 bonus]}
+
+****NOTE: images of trees are in the appendix found at the end of the document
+
 \begin{table}[h]
 	\centering
 	\begin{tabular}{cccc|c}
@@ -146,13 +149,13 @@ Sv=\begin{tabular}{|l|l|l|l|l|}
 
 Because the subset has the same label for every example, we return a leaf node with label 0.
 
-The tree is now fully contructed:
-\\\\
-INSERT PDF
-\\\\
+The tree is now fully contructed
+
 \item~[2 points] 
 `\end{enumerate}
 \item~[17 points] 
+
+\textbf{NOTE: in order to reduce space I abbreviated some of the descriptions of the tree construction in the following questions. Refer to question one for specfics on how each column in the tables is computed.}
 \begin{enumerate}
 	\item~[7 points]
 	
@@ -351,6 +354,9 @@ For the S subset, all the labels have the same value so we append a leaf with la
 The tree is now complete.
 
 	\item~[3 points] Compare the two trees you just created with the one we built in the class (see Page 58 of the lecture slides). Are there any differences? Why? 
+
+There are not any differences in the trees. This is because they were split by outlook at the first node, and then have the same substrucures that lead to leaf nodes in further iterations.
+
 \end{enumerate}
 
 \item~[16 points] 
@@ -540,12 +546,7 @@ The tree is now complete.
 
 
 
-\begin{lstlisting}
-with open(CSVfile, 'r') as f:
-     for line in f:
-            terms = line.strip().split(',')
-            process one training example
-\end{lstlisting}
+
 \begin{enumerate}
 \item~[15 points] 
 \item~[10 points] 
@@ -571,6 +572,9 @@ The percent error for each split type and maximum depth using the \emph\textbf{t
 	\end{tabular}
 
 \item~[5 points] What can you conclude by comparing the training errors and the test errors? 
+\\\\
+By comparing the training errors and the test errors, we can conclude that the decision tree is overfitting the data. This is because the testing errors go up as the depth increases while the training errors go down.
+
 \end{enumerate}
 
 
@@ -622,10 +626,70 @@ The percent error for each split type and maximum depth using the \emph\textbf{t
 			\end{tabular}
 	\item~[10 points] 
 	
+	The results are shown in the tabel below. The percent error for the training data is on the left, and the percent error for the testing data is on the right.
+
+
+	\begin{tabular}{|l|l|l|l|}
+		\hline
+		& IG & GI & ME \\ \hline
+		1  & 0.1192           & 0.1192     & 0.1192         \\ \hline
+		2  & 0.1192           & 0.1088     & 0.1088         \\ \hline
+		3  & 0.106            & 0.1042     & 0.1042         \\ \hline
+		4  & 0.1008           & 0.0934     & 0.096          \\ \hline
+		5  & 0.0806           & 0.0766     & 0.082          \\ \hline
+		6  & 0.0634           & 0.0626     & 0.073          \\ \hline
+		7  & 0.05             & 0.0504     & 0.0698         \\ \hline
+		8  & 0.038            & 0.0378     & 0.065          \\ \hline
+		9  & 0.033            & 0.0312     & 0.059          \\ \hline
+		10 & 0.0274           & 0.0254     & 0.0534         \\ \hline
+		11 & 0.0228           & 0.0218     & 0.0462         \\ \hline
+		12 & 0.0188           & 0.0188     & 0.0384         \\ \hline
+		13 & 0.0184           & 0.0182     & 0.032          \\ \hline
+		14 & 0.0182           & 0.0182     & 0.028          \\ \hline
+		15 & 0.0182           & 0.0182     & 0.023          \\ \hline
+		16 & 0.0182           & 0.0182     & 0.0202         \\ \hline
+		\end{tabular}
+		\begin{tabular}{|l|l|l|l|}
+			\hline
+			& IG & GI & ME \\ \hline
+			1  & 0.1192           & 0.1192     & 0.1192         \\ \hline
+			2  & 0.1192           & 0.1442     & 0.1442         \\ \hline
+			3  & 0.139            & 0.1472     & 0.1472         \\ \hline
+			4  & 0.1576           & 0.1582     & 0.1558         \\ \hline
+			5  & 0.1628           & 0.1642     & 0.1584         \\ \hline
+			6  & 0.1758           & 0.178      & 0.1612         \\ \hline
+			7  & 0.1864           & 0.1866     & 0.1624         \\ \hline
+			8  & 0.1906           & 0.1968     & 0.166          \\ \hline
+			9  & 0.1982           & 0.2016     & 0.1696         \\ \hline
+			10 & 0.2048           & 0.207      & 0.1762         \\ \hline
+			11 & 0.2108           & 0.2132     & 0.1844         \\ \hline
+			12 & 0.2112           & 0.2134     & 0.1914         \\ \hline
+			13 & 0.2138           & 0.2152     & 0.1966         \\ \hline
+			14 & 0.2138           & 0.2152     & 0.1994         \\ \hline
+			15 & 0.2138           & 0.2152     & 0.2036         \\ \hline
+			16 & 0.2138           & 0.2152     & 0.2058         \\ \hline
+			\end{tabular}
 	
 	\item~[5 points] What can you conclude by comparing the training errors and the test errors, with different tree depths, as well as different ways to deal with "unkown" attribute values?
+\\\\
+By comparing the training errors and the test errors, we can conclude that the decision tree is overfitting the data. This is because the testing errors go up as the depth increases while the training errors go down.
+
+By comparing whether or not we used unknown as a value, it seems that substituting it generally leads to slightly lower error for the testing data for a higher maximum depth.
 \end{enumerate}
 \end{enumerate}
+\section*{Appendix: Tree Structures}
+
+For question 1, the tree structure is:
+
+\includegraphics[scale=.65]{./p1_tree.pdf}
+
+
+
+All of the trees for questions 2 and 3 ended up having the same structure:
+
+
+\includegraphics[scale=.6]{./tennis_tree.pdf}
+
 
 \end{document}
 %%% Local Variables:

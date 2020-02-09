@@ -514,19 +514,11 @@ class DecisionTree:
                         else:
                             features[i][j]='below'
         if(len(self.unknown_cols)>0):    
-            modes={}
             for i,v in enumerate(features):
-                # print(training_features[i])
-                if i in self.unknown_cols:
-                    # print(training_features[i].dtype)
-                    modes[i]=statistics.mode(features[i])
-                    # medians[i]=statistics.median(training_features[i])
-                    # print('median is ', medians[i])
-            for i,v in enumerate(features):
-                if i in self.unknown_cols:
-                    for j,a in enumerate(features[i]):
+                for j,a in enumerate(features[i]):
+                    if j in self.unknown_cols:
                         if(features[i][j]=="unknown"):
-                            features[i][j]=modes[i]
+                            features[i][j]=self.modes[j]
         for feat in features:
             # print('feature is',feat)
             res= self.find_label(feat,self.root)

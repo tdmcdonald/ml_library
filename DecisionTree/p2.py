@@ -60,7 +60,7 @@ for split in ['entropy','gini','majority_error']:
         error_num=0
         for i,p in enumerate(predictions):
             if p!=train_labels[i]:
-                # print('prediction is ', p, 'actual is ', train_labels[i])
+                print('prediction is ', p, 'actual is ', train_labels[i])
                 error_num+=1
                 # print('error at ', i)
 
